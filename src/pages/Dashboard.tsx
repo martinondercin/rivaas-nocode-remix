@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -34,7 +33,7 @@ const Dashboard = () => {
     });
   };
 
-  const verificationLink = "https://id.sumsub.com/idverify_uH_Jg6V7YCEBLiexnx5N";
+  const verificationLink = "https://verify-identity.innovatrics.com/demo-iframe";
 
   return (
     <div className="p-6 h-full">
