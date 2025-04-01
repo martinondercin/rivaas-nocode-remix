@@ -34,13 +34,13 @@ const Signup = () => {
   return (
     <div className="min-h-screen grid md:grid-cols-2">
       <div className="bg-gray-900 hidden md:flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 w-full h-full">
+        <div className="absolute inset-0 w-full h-full bg-[#0a1940]">
           <img 
-            src="https://images.unsplash.com/photo-1486718448742-163732cd1544?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4392&q=80" 
-            alt="Minimalist wavy structure" 
-            className="w-full h-full object-cover opacity-70"
+            src="/lovable-uploads/41730dcd-34b5-4636-9e3e-9c50a5184562.png" 
+            alt="Identity Verification Abstract" 
+            className="w-full h-full object-contain opacity-90 p-12"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1940]/80 to-transparent"></div>
         </div>
         <div className="relative z-10 text-white text-center px-8">
           <h2 className="text-3xl font-bold mb-4">Join Our Verification Platform</h2>
