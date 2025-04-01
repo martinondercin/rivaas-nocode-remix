@@ -35,13 +35,18 @@ const Login = () => {
 
   return (
     <div className="min-h-screen grid md:grid-cols-2">
-      <div className="bg-gray-200 hidden md:flex items-center justify-center">
-        <div className="w-64 h-64 bg-black rounded">
+      <div className="bg-gray-900 hidden md:flex items-center justify-center relative overflow-hidden">
+        <div className="absolute inset-0 w-full h-full">
           <img 
-            src="/placeholder.svg" 
-            alt="Identity Verification" 
-            className="w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3880&q=80" 
+            alt="Abstract blue starry night" 
+            className="w-full h-full object-cover opacity-70"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent"></div>
+        </div>
+        <div className="relative z-10 text-white text-center px-8">
+          <h2 className="text-3xl font-bold mb-4">Secure Identity Verification</h2>
+          <p className="text-lg opacity-80">Protect your business with our advanced verification services</p>
         </div>
       </div>
       
