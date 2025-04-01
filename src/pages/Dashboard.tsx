@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -5,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Dialog
 import { Button } from "@/components/ui/button";
 import { QrCode, Copy, Download, Link as LinkIcon, Key, Info } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 const Dashboard = () => {
   const [verificationCount] = useState(1234); // This would come from an API in a real app
@@ -88,14 +90,37 @@ const Dashboard = () => {
                     Generate Link
                   </Button>
                   
-                  <Button 
-                    variant="outline" 
-                    className="border-verify-mediumGray/30 text-verify-mediumGray hover:bg-verify-lightGray"
-                    onClick={() => window.open('#', '_blank')}
-                  >
-                    <Info className="mr-2 h-4 w-4" />
-                    <span>Learn More</span>
-                  </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="border-verify-mediumGray/30 text-verify-mediumGray hover:bg-verify-lightGray"
+                      >
+                        <Info className="mr-2 h-4 w-4" />
+                        <span>Learn More</span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                      <div className="space-y-4">
+                        <h3 className="font-semibold text-lg text-verify-darkGray">No-Code Integration</h3>
+                        <div className="space-y-2">
+                          <h4 className="font-medium">Simplicity First</h4>
+                          <p className="text-sm text-verify-mediumGray">
+                            Our no-code solution allows you to implement identity verification without writing a single line of code.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-medium">Key Benefits:</h4>
+                          <ul className="list-disc pl-5 text-sm text-verify-mediumGray space-y-1">
+                            <li>Instant setup with no technical knowledge required</li>
+                            <li>Share links via email, SMS or embed in your website</li>
+                            <li>QR code support for mobile verification</li>
+                            <li>Perfect for small businesses and quick implementations</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </CardContent>
@@ -188,14 +213,38 @@ const Dashboard = () => {
                     Generate Token and Secure Key
                   </Button>
                   
-                  <Button 
-                    variant="outline" 
-                    className="border-verify-mediumGray/30 text-verify-mediumGray hover:bg-verify-lightGray"
-                    onClick={() => window.open('#', '_blank')}
-                  >
-                    <Info className="mr-2 h-4 w-4" />
-                    <span>Learn More</span>
-                  </Button>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button 
+                        variant="outline" 
+                        className="border-verify-mediumGray/30 text-verify-mediumGray hover:bg-verify-lightGray"
+                      >
+                        <Info className="mr-2 h-4 w-4" />
+                        <span>Learn More</span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                      <div className="space-y-4">
+                        <h3 className="font-semibold text-lg text-verify-darkGray">API Integration</h3>
+                        <div className="space-y-2">
+                          <h4 className="font-medium">Enterprise-Grade Security</h4>
+                          <p className="text-sm text-verify-mediumGray">
+                            Our API integration provides a secure, customizable solution for businesses that require complete control over their identity verification flow.
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <h4 className="font-medium">Key Benefits:</h4>
+                          <ul className="list-disc pl-5 text-sm text-verify-mediumGray space-y-1">
+                            <li>Enhanced security with encrypted API communications</li>
+                            <li>Seamless integration with your existing systems</li>
+                            <li>Customizable verification workflows</li>
+                            <li>Real-time verification status and callback support</li>
+                            <li>Comprehensive audit logs and compliance reporting</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
             </CardContent>
