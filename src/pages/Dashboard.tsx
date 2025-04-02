@@ -1,9 +1,10 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { QrCode, Copy, Download, Link as LinkIcon, Key, Info, Code } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
@@ -17,12 +18,31 @@ const Dashboard = () => {
   const [apiKey, setApiKey] = useState("");
   const [apiSecret, setApiSecret] = useState("");
   const { toast } = useToast();
+  
+  // URL fields for API integration
+  const [verifiedUrl, setVerifiedUrl] = useState("");
+  const [rejectedUrl, setRejectedUrl] = useState("");
+  const [unverifiedUrl, setUnverifiedUrl] = useState("");
+  const [callbackUrl, setCallbackUrl] = useState("");
+  const [logoUrl, setLogoUrl] = useState("");
+  
+  // Check if all URL fields are filled
+  const allFieldsFilled = verifiedUrl && rejectedUrl && unverifiedUrl && callbackUrl && logoUrl;
 
   const handleGenerateLink = () => {
     setShowQrCode(true);
   };
 
   const handleGenerateApiKeys = () => {
+    if (!allFieldsFilled) {
+      toast({
+        title: "Missing information",
+        description: "Please fill in all URL fields before generating API keys.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     // In a real app, this would call an API to generate secure tokens
     setApiKey("vf_live_" + Math.random().toString(36).substring(2, 15));
     setApiSecret("sk_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
@@ -220,14 +240,53 @@ const Dashboard = () => {
                 <div>
                   <h3 className="font-medium text-verify-darkGray">API Integration</h3>
                   <p className="text-sm text-verify-mediumGray mt-1">
-                    Generate secure API keys and tokens to integrate identity verification directly into your systems.
+                    Configure your integration endpoints and generate secure API keys to integrate identity verification directly into your systems.
                   </p>
                 </div>
                 
-                <div className="flex items-center gap-4">
+                <div className="grid gap-3">
+                  <Input 
+                    type="url" 
+                    placeholder="Verified URL" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    value={verifiedUrl}
+                    onChange={(e) => setVerifiedUrl(e.target.value)}
+                  />
+                  <Input 
+                    type="url" 
+                    placeholder="Rejected URL" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    value={rejectedUrl}
+                    onChange={(e) => setRejectedUrl(e.target.value)}
+                  />
+                  <Input 
+                    type="url" 
+                    placeholder="Unverified URL" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    value={unverifiedUrl}
+                    onChange={(e) => setUnverifiedUrl(e.target.value)}
+                  />
+                  <Input 
+                    type="url" 
+                    placeholder="Callback URL" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    value={callbackUrl}
+                    onChange={(e) => setCallbackUrl(e.target.value)}
+                  />
+                  <Input 
+                    type="url" 
+                    placeholder="Logo URL" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                    value={logoUrl}
+                    onChange={(e) => setLogoUrl(e.target.value)}
+                  />
+                </div>
+                
+                <div className="flex items-center gap-4 mt-4">
                   <Button 
                     onClick={handleGenerateApiKeys}
                     className="bg-verify-green hover:bg-verify-green/90 text-white"
+                    disabled={!allFieldsFilled}
                   >
                     Generate Token and Secure Key
                   </Button>
@@ -269,42 +328,14 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          <Dialog open={showApiForm} onOpenChange={setShowApiForm}>
+          <Dialog open={showApiForm && allFieldsFilled} onOpenChange={setShowApiForm}>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
-                <DialogTitle>Please provide the following info for API Integration</DialogTitle>
+                <DialogTitle>API Integration Keys</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-                <div className="grid gap-3">
-                  <input 
-                    type="url" 
-                    placeholder="Verified URL" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  />
-                  <input 
-                    type="url" 
-                    placeholder="Rejected URL" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  />
-                  <input 
-                    type="url" 
-                    placeholder="Unverified URL" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  />
-                  <input 
-                    type="url" 
-                    placeholder="Callback URL" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  />
-                  <input 
-                    type="url" 
-                    placeholder="Logo URL" 
-                    className="w-full px-4 py-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-
                 {(apiKey && apiSecret) && (
-                  <div className="space-y-4 pt-4 border-t border-gray-200">
+                  <div className="space-y-4">
                     <div>
                       <label className="text-sm font-medium">Your API Key</label>
                       <div className="flex items-center space-x-2 mt-1">
@@ -348,18 +379,10 @@ const Dashboard = () => {
                   <Button 
                     variant="outline" 
                     onClick={() => {
-                      if (apiKey && apiSecret) {
-                        setShowApiForm(false);
-                      } else {
-                        toast({
-                          title: "Form submitted",
-                          description: "Your API configuration has been saved.",
-                        });
-                        handleGenerateApiKeys();
-                      }
+                      setShowApiForm(false);
                     }}
                   >
-                    {apiKey && apiSecret ? "Close" : "Submit"}
+                    Close
                   </Button>
                   
                   {(apiKey && apiSecret) && (
