@@ -4,12 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { QrCode, Copy, Download, Link as LinkIcon, Key, Info } from "lucide-react";
+import { QrCode, Copy, Download, Link as LinkIcon, Key, Info, Code } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 const Dashboard = () => {
-  const [verificationCount] = useState(1234); // This would come from an API in a real app
+  // Split verification counts by type
+  const [noCodeVerificationCount] = useState(845); // This would come from an API in a real app
+  const [apiVerificationCount] = useState(389); // This would come from an API in a real app
   const [showQrCode, setShowQrCode] = useState(false);
   const [showApiForm, setShowApiForm] = useState(false);
   const [apiKey, setApiKey] = useState("");
@@ -44,20 +46,37 @@ const Dashboard = () => {
         <p className="text-verify-mediumGray">Monitor your verification activity and manage integration options</p>
       </header>
       
-      <div className="mb-8">
+      <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="bg-white shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-verify-mediumGray">
-              Total Verifications
+              No-Code Verifications
             </CardTitle>
             <div className="h-8 w-8 rounded-md bg-verify-lightGray flex items-center justify-center">
               <QrCode className="h-4 w-4 text-verify-darkGray" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-verify-darkGray">{verificationCount}</div>
+            <div className="text-3xl font-bold text-verify-darkGray">{noCodeVerificationCount}</div>
             <p className="text-xs text-verify-mediumGray mt-1">
-              Identity verifications performed across all methods
+              Identity verifications performed via links and QR codes
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-white shadow-sm">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-verify-mediumGray">
+              API Integration Verifications
+            </CardTitle>
+            <div className="h-8 w-8 rounded-md bg-verify-lightGray flex items-center justify-center">
+              <Code className="h-4 w-4 text-verify-darkGray" />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold text-verify-darkGray">{apiVerificationCount}</div>
+            <p className="text-xs text-verify-mediumGray mt-1">
+              Identity verifications performed via API integration
             </p>
           </CardContent>
         </Card>
