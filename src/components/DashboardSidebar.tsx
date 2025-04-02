@@ -44,8 +44,12 @@ export const DashboardSidebar = () => {
     <div className="min-h-screen bg-white border-r border-gray-200 w-64 flex flex-col">
       <div className="p-6">
         <div className="flex items-center gap-2">
-          <div className="bg-verify-green rounded-md h-8 w-8 flex items-center justify-center text-white font-bold">IV</div>
-          <span className="font-bold text-lg">VerifyID</span>
+          <img 
+            src="/lovable-uploads/55ac85d9-1349-4518-b81e-61bc02013758.png" 
+            alt="Innovatrics Logo" 
+            className="h-8 w-auto"
+          />
+          <span className="font-bold text-lg">Innovatrics</span>
         </div>
       </div>
       
