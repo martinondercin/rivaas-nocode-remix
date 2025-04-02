@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -10,23 +9,20 @@ import { useToast } from "@/components/ui/use-toast";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 
 const Dashboard = () => {
-  // Split verification counts by type
-  const [noCodeVerificationCount] = useState(845); // This would come from an API in a real app
-  const [apiVerificationCount] = useState(389); // This would come from an API in a real app
+  const [noCodeVerificationCount] = useState(845);
+  const [apiVerificationCount] = useState(389);
   const [showQrCode, setShowQrCode] = useState(false);
   const [showApiForm, setShowApiForm] = useState(false);
   const [apiKey, setApiKey] = useState("");
   const [apiSecret, setApiSecret] = useState("");
   const { toast } = useToast();
   
-  // URL fields for API integration
   const [verifiedUrl, setVerifiedUrl] = useState("");
   const [rejectedUrl, setRejectedUrl] = useState("");
   const [unverifiedUrl, setUnverifiedUrl] = useState("");
   const [callbackUrl, setCallbackUrl] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   
-  // Check if all URL fields are filled
   const allFieldsFilled = verifiedUrl && rejectedUrl && unverifiedUrl && callbackUrl && logoUrl;
 
   const handleGenerateLink = () => {
@@ -43,7 +39,6 @@ const Dashboard = () => {
       return;
     }
     
-    // In a real app, this would call an API to generate secure tokens
     setApiKey("vf_live_" + Math.random().toString(36).substring(2, 15));
     setApiSecret("sk_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
     setShowApiForm(true);
@@ -58,6 +53,7 @@ const Dashboard = () => {
   };
 
   const verificationLink = "https://verify-identity.innovatrics.com/demo-iframe";
+  const apiDocumentationUrl = "https://www.innovatrics.com/wp-content/uploads/2025/02/Innovatrics-IDV-Service_Integration-Manual.pdf";
 
   return (
     <div className="p-6 h-full">
@@ -328,7 +324,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
           
-          <Dialog open={showApiForm && allFieldsFilled} onOpenChange={setShowApiForm}>
+          <Dialog open={showApiForm} onOpenChange={setShowApiForm}>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>API Integration Keys</DialogTitle>
@@ -393,7 +389,7 @@ const Dashboard = () => {
                           title: "API documentation",
                           description: "API documentation has been opened in a new tab.",
                         });
-                        window.open('#', '_blank');
+                        window.open(apiDocumentationUrl, '_blank');
                       }}
                     >
                       <LinkIcon className="mr-2 h-4 w-4" />
