@@ -45,8 +45,8 @@ export const DashboardSidebar = () => {
       <div className="p-6">
         <div className="flex items-center gap-2">
           <img 
-            src="/lovable-uploads/55ac85d9-1349-4518-b81e-61bc02013758.png" 
-            alt="Logo" 
+            src="/lovable-uploads/fc69db1a-cc90-4817-9a09-256167c7944d.png" 
+            alt="Innovatrics Logo" 
             className="h-10 w-auto"
           />
         </div>
