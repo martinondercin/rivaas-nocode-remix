@@ -45,7 +45,7 @@ const Dashboard = () => {
           </TabsTrigger>
           <TabsTrigger 
             value="api"
-            className="data-[state=active]:bg-[#6E59A5] data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-300 font-medium"
+            className="data-[state=active]:bg-[#0D1941] data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-300 font-medium"
           >
             API Integration
           </TabsTrigger>
