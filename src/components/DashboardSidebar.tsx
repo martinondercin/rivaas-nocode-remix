@@ -45,11 +45,10 @@ export const DashboardSidebar = () => {
       <div className="p-6">
         <div className="flex items-center gap-2">
           <img 
-            src="/lovable-uploads/55ac85d9-1349-4518-b81e-61bc02013758.png" 
+            src="/lovable-uploads/adc679df-2bf2-4ed7-8604-323637236c41.png" 
             alt="Innovatrics Logo" 
-            className="h-8 w-auto"
+            className="h-10 w-auto"
           />
-          <span className="font-bold text-lg">Innovatrics</span>
         </div>
       </div>
       

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -102,11 +103,21 @@ const Dashboard = () => {
       
       <Tabs defaultValue="no-code" className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="no-code">No-Code Integration</TabsTrigger>
-          <TabsTrigger value="api">API Integration</TabsTrigger>
+          <TabsTrigger 
+            value="no-code" 
+            className="data-[state=active]:bg-verify-green data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-300 font-medium"
+          >
+            No-Code Integration
+          </TabsTrigger>
+          <TabsTrigger 
+            value="api"
+            className="data-[state=active]:bg-[#6E59A5] data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-300 font-medium"
+          >
+            API Integration
+          </TabsTrigger>
         </TabsList>
         
-        <TabsContent value="no-code" className="space-y-4">
+        <TabsContent value="no-code" className="space-y-4 bg-[#F1F0FB] p-5 rounded-lg border border-gray-100 shadow-sm">
           <Card>
             <CardContent className="pt-6">
               <div className="space-y-4">
@@ -229,7 +240,7 @@ const Dashboard = () => {
           </Dialog>
         </TabsContent>
         
-        <TabsContent value="api" className="space-y-4">
+        <TabsContent value="api" className="space-y-4 bg-[#E5DEFF] p-5 rounded-lg border border-gray-100 shadow-sm">
           <Card>
             <CardContent className="pt-6">
               <div className="space-y-4">
@@ -281,7 +292,7 @@ const Dashboard = () => {
                 <div className="flex items-center gap-4 mt-4">
                   <Button 
                     onClick={handleGenerateApiKeys}
-                    className="bg-verify-green hover:bg-verify-green/90 text-white"
+                    className="bg-[#6E59A5] hover:bg-[#6E59A5]/90 text-white"
                     disabled={!allFieldsFilled}
                   >
                     Generate Token and Secure Key
@@ -383,7 +394,7 @@ const Dashboard = () => {
                   
                   {(apiKey && apiSecret) && (
                     <Button
-                      className="bg-verify-green hover:bg-verify-green/90 text-white"
+                      className="bg-[#6E59A5] hover:bg-[#6E59A5]/90 text-white"
                       onClick={() => {
                         toast({
                           title: "API documentation",
