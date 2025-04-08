@@ -55,7 +55,7 @@ const Dashboard = () => {
           <NoCodeIntegration />
         </TabsContent>
         
-        <TabsContent value="api" className="space-y-4 bg-[#0D1941] p-5 rounded-lg border border-gray-100 shadow-sm">
+        <TabsContent value="api" className="space-y-4 bg-[#F1F0FB] p-5 rounded-lg border border-gray-100 shadow-sm">
           <ApiIntegration />
         </TabsContent>
       </Tabs>
