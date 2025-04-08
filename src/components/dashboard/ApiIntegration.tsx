@@ -91,7 +91,7 @@ export const ApiIntegration = () => {
             <div className="flex items-center gap-4 mt-4">
               <Button 
                 onClick={handleGenerateApiKeys}
-                className="bg-[#6E59A5] hover:bg-[#6E59A5]/90 text-white"
+                className="bg-[#0D1941] hover:bg-[#0D1941]/90 text-white"
                 disabled={!allFieldsFilled}
               >
                 Generate Token and Secure Key
