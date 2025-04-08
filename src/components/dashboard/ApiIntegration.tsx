@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Info } from "lucide-react";
+import { Info, FileText } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { useToast } from "@/hooks/use-toast";
 import { ApiKeysDialog } from "./ApiKeysDialog";
@@ -36,6 +36,14 @@ export const ApiIntegration = () => {
     setApiKey("vf_live_" + Math.random().toString(36).substring(2, 15));
     setApiSecret("sk_" + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15));
     setShowApiForm(true);
+  };
+
+  const handleOpenDocumentation = () => {
+    toast({
+      title: "API documentation",
+      description: "API documentation has been opened in a new tab.",
+    });
+    window.open(apiDocumentationUrl, '_blank');
   };
 
   return (
@@ -129,6 +137,17 @@ export const ApiIntegration = () => {
                   </div>
                 </PopoverContent>
               </Popover>
+            </div>
+            
+            <div className="mt-4">
+              <Button
+                variant="outline"
+                className="flex items-center border-[#0D1941] text-[#0D1941] hover:bg-[#0D1941]/10"
+                onClick={handleOpenDocumentation}
+              >
+                <FileText className="mr-2 h-4 w-4" />
+                View Integration Manual
+              </Button>
             </div>
           </div>
         </CardContent>
