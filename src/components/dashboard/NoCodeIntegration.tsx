@@ -2,14 +2,21 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info } from "lucide-react";
+import { Info, Link2 } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { QrCodeDialog } from "./QrCodeDialog";
+import { Progress } from "@/components/ui/progress";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export const NoCodeIntegration = () => {
   const [showQrCode, setShowQrCode] = useState(false);
   const verificationLink = "https://verify-identity.innovatrics.com/demo-iframe";
-
+  
+  // Set maximum number of verifications to 150
+  const maxVerifications = 150;
+  const currentVerifications = 85; // Current number of verifications
+  const percentComplete = (currentVerifications / maxVerifications) * 100;
+  
   return (
     <>
       <Card>
@@ -20,6 +27,21 @@ export const NoCodeIntegration = () => {
               <p className="text-sm text-verify-mediumGray mt-1">
                 Generate a static link and QR code for customer identity verification without technical setup.
               </p>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>{currentVerifications} verifications performed</span>
+                <span className="font-medium">{maxVerifications} free limit</span>
+              </div>
+              <Progress value={percentComplete} className="h-2" />
+              
+              <Alert className="mt-3 bg-verify-lightGray border-verify-mediumGray/20">
+                <AlertDescription className="text-xs text-verify-mediumGray">
+                  Once the maximum number of free verifications is achieved, link and QR code will be deactivated. 
+                  In order to continue with this service, please contact us or switch to API integration.
+                </AlertDescription>
+              </Alert>
             </div>
             
             <div className="flex items-center gap-4">

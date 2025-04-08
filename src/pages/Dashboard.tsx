@@ -7,7 +7,7 @@ import { NoCodeIntegration } from "@/components/dashboard/NoCodeIntegration";
 import { ApiIntegration } from "@/components/dashboard/ApiIntegration";
 
 const Dashboard = () => {
-  const [noCodeVerificationCount] = useState(845);
+  const [noCodeVerificationCount] = useState(85);
   const [apiVerificationCount] = useState(389);
 
   return (
@@ -55,7 +55,7 @@ const Dashboard = () => {
           <NoCodeIntegration />
         </TabsContent>
         
-        <TabsContent value="api" className="space-y-4 bg-[#E5DEFF] p-5 rounded-lg border border-gray-100 shadow-sm">
+        <TabsContent value="api" className="space-y-4 bg-[#0D1941] p-5 rounded-lg border border-gray-100 shadow-sm">
           <ApiIntegration />
         </TabsContent>
       </Tabs>
