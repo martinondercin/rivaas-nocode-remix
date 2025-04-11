@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { BarChart3, Clock, FileText, Settings, LogOut, User } from "lucide-react";
+import { BarChart3, Clock, FileText, Settings, LogOut, User, CreditCard } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -32,6 +32,11 @@ export const DashboardSidebar = () => {
       name: "Reports",
       path: "/dashboard/reports",
       icon: <FileText className="h-5 w-5" />,
+    },
+    {
+      name: "Billing",
+      path: "/dashboard/billing",
+      icon: <CreditCard className="h-5 w-5" />,
     },
     {
       name: "Settings",
