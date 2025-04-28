@@ -119,9 +119,7 @@ const Billing = () => {
           <CardContent>
             <UsageStats />
           </CardContent>
-          <CardFooter>
-            <Button variant="outline" className="w-full">View Detailed Usage</Button>
-          </CardFooter>
+          {/* Removed the CardFooter with the "View Detailed Usage" button */}
         </Card>
       </div>
       
