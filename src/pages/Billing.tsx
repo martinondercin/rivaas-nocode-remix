@@ -3,28 +3,21 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Receipt, History, AlertCircle, CheckCircle, CreditCardIcon } from "lucide-react";
+import { CreditCard, Receipt, History, CreditCardIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { PaymentMethodCard } from "@/components/billing/PaymentMethodCard";
 import { InvoiceList } from "@/components/billing/InvoiceList";
-import { SubscriptionPlans } from "@/components/billing/SubscriptionPlans";
 import { UsageStats } from "@/components/billing/UsageStats";
 import { AddPaymentMethodDialog } from "@/components/billing/AddPaymentMethodDialog";
+import { StripePaymentForm } from "@/components/billing/StripePaymentForm";
 
 const Billing = () => {
   const { toast } = useToast();
   const [showAddPaymentDialog, setShowAddPaymentDialog] = useState(false);
+  const [showStripePaymentForm, setShowStripePaymentForm] = useState(false);
   const [accountType, setAccountType] = useState<"prepaid" | "postpaid">("prepaid");
   const [currentBalance, setCurrentBalance] = useState(250);
-  
-  const handleAddFunds = () => {
-    // In a real implementation, this would open a payment flow
-    toast({
-      title: "Adding funds",
-      description: "This would open a payment gateway in a real implementation.",
-    });
-  };
   
   const handleAccountTypeChange = (type: "prepaid" | "postpaid") => {
     setAccountType(type);
@@ -34,11 +27,15 @@ const Billing = () => {
     });
   };
 
+  const handleAddFunds = () => {
+    setShowStripePaymentForm(true);
+  };
+
   return (
     <div className="p-6 h-full">
       <header className="mb-6">
         <h1 className="text-2xl font-bold text-verify-darkGray">Billing & Payments</h1>
-        <p className="text-verify-mediumGray">Manage your payment methods, subscriptions, and invoices</p>
+        <p className="text-verify-mediumGray">Manage your payment methods and invoices</p>
       </header>
       
       <div className="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -82,8 +79,8 @@ const Billing = () => {
           </CardHeader>
           <CardContent>
             <div className="flex space-x-2 mb-2">
-              <Badge variant={accountType === "prepaid" ? "default" : "outline"} className="bg-verify-green">Prepaid</Badge>
-              <Badge variant={accountType === "postpaid" ? "default" : "outline"} className="bg-verify-green">Postpaid</Badge>
+              <Badge variant={accountType === "prepaid" ? "default" : "outline"} className={accountType === "prepaid" ? "bg-verify-green" : ""}>Prepaid</Badge>
+              <Badge variant={accountType === "postpaid" ? "default" : "outline"} className={accountType === "postpaid" ? "bg-verify-green" : ""}>Postpaid</Badge>
             </div>
             <p className="text-verify-mediumGray text-sm">
               {accountType === "prepaid" 
@@ -129,9 +126,8 @@ const Billing = () => {
       </div>
       
       <Tabs defaultValue="payment-methods" className="space-y-4">
-        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-3 md:grid-cols-3">
+        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-2 md:grid-cols-2">
           <TabsTrigger value="payment-methods">Payment Methods</TabsTrigger>
-          <TabsTrigger value="subscriptions">Subscription Plans</TabsTrigger>
           <TabsTrigger value="invoices">Invoices</TabsTrigger>
         </TabsList>
         
@@ -171,20 +167,6 @@ const Billing = () => {
           </Card>
         </TabsContent>
         
-        <TabsContent value="subscriptions" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Subscription Plans</CardTitle>
-              <CardDescription>
-                Choose a plan that best fits your needs
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <SubscriptionPlans />
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
         <TabsContent value="invoices" className="space-y-4">
           <Card>
             <CardHeader>
@@ -203,6 +185,18 @@ const Billing = () => {
       <AddPaymentMethodDialog 
         open={showAddPaymentDialog} 
         onOpenChange={setShowAddPaymentDialog} 
+      />
+
+      <StripePaymentForm
+        open={showStripePaymentForm}
+        onOpenChange={setShowStripePaymentForm}
+        onSuccess={(amount: number) => {
+          setCurrentBalance(prev => prev + amount);
+          toast({
+            title: "Payment successful",
+            description: `$${amount.toFixed(2)} has been added to your balance.`,
+          });
+        }}
       />
     </div>
   );
