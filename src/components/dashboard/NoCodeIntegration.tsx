@@ -39,7 +39,7 @@ export const NoCodeIntegration = () => {
               <Alert className="mt-3 bg-verify-lightGray border-verify-mediumGray/20">
                 <AlertDescription className="text-xs text-verify-mediumGray">
                   Once the maximum number of free verifications is achieved, link and QR code will be deactivated. 
-                  In order to continue with this service, please contact us or switch to API integration.
+                  In order to continue with this service, please top up your account balance or switch to API integration.
                 </AlertDescription>
               </Alert>
             </div>
