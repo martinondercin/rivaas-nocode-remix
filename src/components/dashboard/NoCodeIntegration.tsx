@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info, Link2, CheckCircle, XCircle } from "lucide-react";
+import { Info, Link2, CheckCircle, XCircle, ChevronDown, ChevronUp, Copy } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { QrCodeDialog } from "./QrCodeDialog";
 import { Progress } from "@/components/ui/progress";
@@ -19,12 +19,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export const NoCodeIntegration = () => {
   const [showQrCode, setShowQrCode] = useState(false);
   const verificationLink = "https://verify-identity.innovatrics.com/demo-iframe";
   const [showRevokeDialog, setShowRevokeDialog] = useState(false);
   const [linkStatus, setLinkStatus] = useState<"active" | "revoked">("active");
+  const [isLinkCollapsibleOpen, setIsLinkCollapsibleOpen] = useState(false);
   const { toast } = useToast();
   
   // Set maximum number of verifications to 150
@@ -44,10 +46,19 @@ export const NoCodeIntegration = () => {
   const handleRevokeLinkConfirm = () => {
     setLinkStatus("revoked");
     setShowRevokeDialog(false);
+    setIsLinkCollapsibleOpen(false); // Close collapsible when link is revoked
     toast({
       title: "Link Revoked",
       description: "Your verification link has been successfully revoked.",
       variant: "destructive",
+    });
+  };
+  
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(verificationLink);
+    toast({
+      title: "Copied!",
+      description: "Verification link copied to clipboard",
     });
   };
   
@@ -157,6 +168,68 @@ export const NoCodeIntegration = () => {
                 </PopoverContent>
               </Popover>
             </div>
+            
+            {/* New collapsible link and QR code section */}
+            {linkStatus === "active" ? (
+              <div className="mt-2">
+                <Collapsible
+                  open={isLinkCollapsibleOpen}
+                  onOpenChange={setIsLinkCollapsibleOpen}
+                  className="w-full"
+                >
+                  <div className="flex items-center">
+                    <CollapsibleTrigger className="flex items-center text-sm text-verify-green hover:text-verify-green/80 font-medium">
+                      {isLinkCollapsibleOpen ? (
+                        <ChevronUp className="h-4 w-4 mr-1" />
+                      ) : (
+                        <ChevronDown className="h-4 w-4 mr-1" />
+                      )}
+                      View current link & QR code
+                    </CollapsibleTrigger>
+                  </div>
+                  
+                  <CollapsibleContent className="mt-3 space-y-4">
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-4 space-y-4">
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-verify-darkGray">Verification Link</p>
+                        <div className="flex items-center">
+                          <div className="flex-grow overflow-hidden bg-white border border-gray-200 rounded-l-md">
+                            <p className="p-2 text-sm font-mono truncate">{verificationLink}</p>
+                          </div>
+                          <button
+                            onClick={handleCopyLink}
+                            className="p-2 bg-verify-green text-white rounded-r-md hover:bg-verify-green/90 transition-colors"
+                          >
+                            <Copy className="h-4 w-4" />
+                          </button>
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <p className="text-sm font-medium text-verify-darkGray">Verification QR Code</p>
+                        <div className="flex justify-center">
+                          <div className="bg-white p-3 border border-gray-200 rounded-lg">
+                            <img 
+                              src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://verify-identity.innovatrics.com/demo-iframe" 
+                              alt="QR Code" 
+                              className="w-[150px] h-[150px]" 
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <p className="text-xs text-verify-mediumGray italic">
+                        You can re-use this link or QR code on other websites or channels until it is revoked.
+                      </p>
+                    </div>
+                  </CollapsibleContent>
+                </Collapsible>
+              </div>
+            ) : (
+              <p className="mt-2 text-sm text-verify-mediumGray">
+                No active verification link available. Please generate a new link.
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
