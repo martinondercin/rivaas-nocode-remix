@@ -26,11 +26,55 @@ export function QrCodeDialog({ open, onOpenChange, verificationLink, isRevoked =
   };
 
   const handleDownloadQR = () => {
-    // Implementation for downloading QR code
-    toast({
-      title: "Downloaded!",
-      description: "QR code has been downloaded",
-    });
+    // Get QR code image
+    const qrCodeImage = document.querySelector(".qr-code-image") as HTMLImageElement;
+    if (!qrCodeImage) {
+      toast({
+        title: "Error",
+        description: "Could not find QR code image",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Create a canvas element
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    
+    // Set canvas dimensions to match the image
+    canvas.width = qrCodeImage.naturalWidth;
+    canvas.height = qrCodeImage.naturalHeight;
+    
+    // Draw the image on the canvas
+    if (context) {
+      // Create a new image to ensure it's fully loaded
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // Handle CORS if QR is from different domain
+      img.onload = () => {
+        context.drawImage(img, 0, 0);
+        
+        // Convert to data URL and create download
+        try {
+          const dataURL = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = dataURL;
+          link.download = "verification-qr-code.png";
+          link.click();
+          
+          toast({
+            title: "Downloaded!",
+            description: "QR code has been downloaded",
+          });
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to download QR code due to CORS restrictions",
+            variant: "destructive",
+          });
+        }
+      };
+      img.src = qrCodeImage.src;
+    }
   };
 
   return (
@@ -65,7 +109,7 @@ export function QrCodeDialog({ open, onOpenChange, verificationLink, isRevoked =
                     <img 
                       src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://verify-identity.innovatrics.com/demo-iframe" 
                       alt="QR Code" 
-                      className="w-[200px] h-[200px]" 
+                      className="w-[200px] h-[200px] qr-code-image" 
                     />
                   </div>
                 </div>

@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info, Link2, CheckCircle, XCircle, ChevronDown, ChevronUp, Copy } from "lucide-react";
+import { Info, Link2, CheckCircle, XCircle, ChevronDown, ChevronUp, Copy, Download } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { QrCodeDialog } from "./QrCodeDialog";
 import { Progress } from "@/components/ui/progress";
@@ -60,6 +59,57 @@ export const NoCodeIntegration = () => {
       title: "Copied!",
       description: "Verification link copied to clipboard",
     });
+  };
+  
+  const handleDownloadQR = () => {
+    const qrCodeImage = document.querySelector(".collapsible-qr-code") as HTMLImageElement;
+    if (!qrCodeImage) {
+      toast({
+        title: "Error",
+        description: "Could not find QR code image",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Create a canvas element
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    
+    // Set canvas dimensions to match the image
+    canvas.width = qrCodeImage.naturalWidth;
+    canvas.height = qrCodeImage.naturalHeight;
+    
+    // Draw the image on the canvas
+    if (context) {
+      // Create a new image to ensure it's fully loaded
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // Handle CORS if QR is from different domain
+      img.onload = () => {
+        context.drawImage(img, 0, 0);
+        
+        // Convert to data URL and create download
+        try {
+          const dataURL = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = dataURL;
+          link.download = "verification-qr-code.png";
+          link.click();
+          
+          toast({
+            title: "Downloaded!",
+            description: "QR code has been downloaded",
+          });
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to download QR code due to CORS restrictions",
+            variant: "destructive",
+          });
+        }
+      };
+      img.src = qrCodeImage.src;
+    }
   };
   
   return (
@@ -169,7 +219,7 @@ export const NoCodeIntegration = () => {
               </Popover>
             </div>
             
-            {/* New collapsible link and QR code section */}
+            {/* Collapsible link and QR code section */}
             {linkStatus === "active" ? (
               <div className="mt-2">
                 <Collapsible
@@ -206,13 +256,24 @@ export const NoCodeIntegration = () => {
                       </div>
                       
                       <div className="space-y-2">
-                        <p className="text-sm font-medium text-verify-darkGray">Verification QR Code</p>
+                        <div className="flex justify-between items-center">
+                          <p className="text-sm font-medium text-verify-darkGray">Verification QR Code</p>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="h-8 gap-1" 
+                            onClick={handleDownloadQR}
+                          >
+                            <Download className="h-3.5 w-3.5" />
+                            <span className="text-xs">Download</span>
+                          </Button>
+                        </div>
                         <div className="flex justify-center">
                           <div className="bg-white p-3 border border-gray-200 rounded-lg">
                             <img 
                               src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://verify-identity.innovatrics.com/demo-iframe" 
                               alt="QR Code" 
-                              className="w-[150px] h-[150px]" 
+                              className="w-[150px] h-[150px] collapsible-qr-code" 
                             />
                           </div>
                         </div>
