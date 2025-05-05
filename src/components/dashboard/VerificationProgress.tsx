@@ -1,6 +1,7 @@
 
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { CheckCircle, XCircle } from "lucide-react";
 
 interface VerificationProgressProps {
   currentVerifications: number;
