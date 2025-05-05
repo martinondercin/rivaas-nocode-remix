@@ -2,20 +2,54 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Info, Link2 } from "lucide-react";
+import { Info, Link2, CheckCircle, XCircle } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { QrCodeDialog } from "./QrCodeDialog";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useToast } from "@/hooks/use-toast";
 
 export const NoCodeIntegration = () => {
   const [showQrCode, setShowQrCode] = useState(false);
   const verificationLink = "https://verify-identity.innovatrics.com/demo-iframe";
+  const [showRevokeDialog, setShowRevokeDialog] = useState(false);
+  const [linkStatus, setLinkStatus] = useState<"active" | "revoked">("active");
+  const { toast } = useToast();
   
   // Set maximum number of verifications to 150
   const maxVerifications = 150;
   const currentVerifications = 85; // Current number of verifications
   const percentComplete = (currentVerifications / maxVerifications) * 100;
+  
+  const handleGenerateLink = () => {
+    setLinkStatus("active");
+    setShowQrCode(true);
+    toast({
+      title: "Link Generated",
+      description: "Your verification link has been successfully generated.",
+    });
+  };
+  
+  const handleRevokeLinkConfirm = () => {
+    setLinkStatus("revoked");
+    setShowRevokeDialog(false);
+    toast({
+      title: "Link Revoked",
+      description: "Your verification link has been successfully revoked.",
+      variant: "destructive",
+    });
+  };
   
   return (
     <>
@@ -30,8 +64,21 @@ export const NoCodeIntegration = () => {
             </div>
             
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>{currentVerifications} verifications performed</span>
+              <div className="flex justify-between text-sm items-center">
+                <div className="flex items-center gap-2">
+                  <span>{currentVerifications} verifications performed</span>
+                  {linkStatus === "active" ? (
+                    <span className="inline-flex items-center bg-green-50 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium gap-1">
+                      <CheckCircle className="h-3 w-3" />
+                      Active
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center bg-red-50 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium gap-1">
+                      <XCircle className="h-3 w-3" />
+                      Revoked
+                    </span>
+                  )}
+                </div>
                 <span className="font-medium">{maxVerifications} free limit</span>
               </div>
               <Progress value={percentComplete} className="h-2" />
@@ -45,12 +92,38 @@ export const NoCodeIntegration = () => {
             </div>
             
             <div className="flex items-center gap-4">
-              <Button 
-                onClick={() => setShowQrCode(true)}
-                className="bg-verify-green hover:bg-verify-green/90 text-white"
-              >
-                Generate Link
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <Button 
+                        onClick={handleGenerateLink}
+                        className="bg-verify-green hover:bg-verify-green/90 text-white"
+                        disabled={linkStatus === "active"}
+                      >
+                        <Link2 className="mr-1.5 h-4 w-4" />
+                        Generate Link
+                      </Button>
+                    </div>
+                  </TooltipTrigger>
+                  {linkStatus === "active" && (
+                    <TooltipContent>
+                      <p>Revoke current link before generating a new one</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
+              
+              {linkStatus === "active" && (
+                <Button 
+                  variant="outline"
+                  className="border-red-300 text-red-600 hover:bg-red-50 bg-red-50"
+                  onClick={() => setShowRevokeDialog(true)}
+                >
+                  <XCircle className="mr-1.5 h-4 w-4" />
+                  Revoke Link
+                </Button>
+              )}
               
               <Popover>
                 <PopoverTrigger asChild>
@@ -92,7 +165,28 @@ export const NoCodeIntegration = () => {
         open={showQrCode} 
         onOpenChange={setShowQrCode} 
         verificationLink={verificationLink} 
+        isRevoked={linkStatus === "revoked"}
       />
+      
+      <AlertDialog open={showRevokeDialog} onOpenChange={setShowRevokeDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Revoke Verification Link</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to revoke this link? It cannot be used anymore.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={handleRevokeLinkConfirm}
+            >
+              Revoke
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
