@@ -27,8 +27,8 @@ const VerificationLimitReachedPage = () => {
           </div>
           
           <div className="p-6">
-            <div className="bg-blue-50 p-4 rounded-md border border-blue-100 mb-6">
-              <p className="text-sm text-blue-800">
+            <div className="bg-green-50 p-4 rounded-md border border-green-100 mb-6">
+              <p className="text-sm text-green-800">
                 Please contact the administrator or support team of the website or service 
                 where you initiated this verification process for further assistance.
               </p>
