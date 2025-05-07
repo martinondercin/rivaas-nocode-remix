@@ -24,14 +24,25 @@ const VerificationLimitReachedPage = () => {
               </h1>
               
               <p className="text-gray-700 mb-2">
-                Unable to verify your identity. The maximum number of verifications 
-                for this service has been reached.
+                Sorry, we can't start your identity verification at this time.
               </p>
               
-              <p className="text-gray-500 text-sm mb-8">
-                (Verification Limit Reached)
+              <p className="text-gray-700 mb-8">
+                The maximum number of verifications for this service has been reached.
               </p>
             </div>
+            
+            <div className="bg-green-50 p-4 rounded-md border border-green-100 mb-6">
+              <p className="text-sm text-green-800">
+                Please contact the administrator or support team of the website or service 
+                where you initiated this verification process for further assistance.
+              </p>
+            </div>
+            
+            <p className="text-xs text-verify-mediumGray italic text-center mb-6">
+              If you believe this is an error, please try again later or contact 
+              the support for the service you were trying to access.
+            </p>
             
             <Button 
               className="w-full bg-verify-green hover:bg-verify-green/90"
