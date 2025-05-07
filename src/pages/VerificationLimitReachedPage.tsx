@@ -1,11 +1,18 @@
 
 import React from "react";
-import { AlertOctagon } from "lucide-react";
+import { X } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const VerificationLimitReachedPage = () => {
+  const navigate = useNavigate();
+  
+  const handleClose = () => {
+    // Navigate back or to a safe fallback route
+    navigate(-1);
+  };
+  
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 p-4 md:p-8">
       <div className="mb-8 p-4">
@@ -16,7 +23,15 @@ const VerificationLimitReachedPage = () => {
       </div>
       
       <div className="flex-grow flex flex-col items-center justify-center">
-        <Card className="w-full max-w-md shadow-sm border-0 bg-white">
+        <Card className="w-full max-w-md shadow-sm border-0 bg-white relative">
+          <button
+            onClick={handleClose}
+            className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+            aria-label="Close"
+          >
+            <X size={18} className="text-gray-500" />
+          </button>
+          
           <CardContent className="p-8">
             <div className="text-center mb-6">
               <h1 className="text-2xl font-bold text-red-600 mb-4">
@@ -43,13 +58,6 @@ const VerificationLimitReachedPage = () => {
               If you believe this is an error, please try again later or contact 
               the support for the service you were trying to access.
             </p>
-            
-            <Button 
-              className="w-full bg-verify-green hover:bg-verify-green/90"
-              onClick={() => window.history.back()}
-            >
-              Return to previous page
-            </Button>
           </CardContent>
         </Card>
       </div>
