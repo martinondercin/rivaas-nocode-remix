@@ -11,7 +11,7 @@ interface PrivacyPolicyDialogProps {
 export function PrivacyPolicyDialog({ open, onOpenChange }: PrivacyPolicyDialogProps) {
   const renderHyperlinks = (text: string) => {
     // Regular expression to match URLs
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const urlRegex = /(https?:\/\/[^\s]+)|(?:www\.[^\s]+\.[^\s]+)/g;
     
     // Split the text by URLs and map each part
     const parts = text.split(urlRegex);
@@ -24,10 +24,16 @@ export function PrivacyPolicyDialog({ open, onOpenChange }: PrivacyPolicyDialogP
     parts.forEach((part, index) => {
       result.push(part);
       if (urls[index]) {
+        let url = urls[index];
+        // Add http:// prefix if it doesn't exist and the URL starts with www
+        if (url.startsWith('www.') && !url.startsWith('http')) {
+          url = 'http://' + url;
+        }
+        
         result.push(
           <a 
             key={`link-${index}`}
-            href={urls[index]} 
+            href={url} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-blue-600 hover:underline inline-flex items-center"
