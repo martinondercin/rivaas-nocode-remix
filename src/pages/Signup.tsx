@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { PrivacyPolicyButton } from "@/components/PrivacyPolicyButton";
 
 const Signup = () => {
   const [companyName, setCompanyName] = useState("");
@@ -104,9 +105,9 @@ const Signup = () => {
                   Terms of Services
                 </Link>{" "}
                 and{" "}
-                <Link to="/privacy" className="text-verify-green hover:underline">
-                  Privacy Policy
-                </Link>
+                <span className="inline-flex align-middle">
+                  <PrivacyPolicyButton className="text-verify-green hover:underline p-0 h-auto" />
+                </span>
               </p>
             </div>
             
