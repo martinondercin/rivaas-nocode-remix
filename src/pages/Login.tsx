@@ -23,7 +23,7 @@ const Login = () => {
         title: "Login successful",
         description: "Welcome back to your Identity Verification Dashboard.",
       });
-      navigate("/dashboard");
+      navigate("/explore-solutions");
     } else {
       toast({
         title: "Login failed",

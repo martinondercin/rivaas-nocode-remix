@@ -16,6 +16,7 @@ import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
 import NotFound from "./pages/NotFound";
 import VerificationLimitReachedPage from "./pages/VerificationLimitReachedPage";
+import ExploreSolutions from "./pages/ExploreSolutions";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verification-limit-reached" element={<VerificationLimitReachedPage />} />
+          <Route path="/explore-solutions" element={<ExploreSolutions />} />
           
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />

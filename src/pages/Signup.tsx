@@ -17,12 +17,13 @@ const Signup = () => {
     
     // In a real implementation, this would call an API to create a user account
     if (companyName && email && password) {
-      // Show success message and redirect to login
+      // Show success message and redirect to explore solutions
+      localStorage.setItem("isAuthenticated", "true");
       toast({
         title: "Account created successfully",
-        description: "Please check your email to verify your account.",
+        description: "Welcome to your Identity Verification Dashboard.",
       });
-      navigate("/login");
+      navigate("/explore-solutions");
     } else {
       toast({
         title: "Signup failed",
