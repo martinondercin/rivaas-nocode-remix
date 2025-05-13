@@ -1,10 +1,27 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, ExternalLink, Check } from "lucide-react";
+import { Search, Plus, ExternalLink, Check, Info, Cake } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 // Define the solution type
 type Solution = {
@@ -22,6 +39,11 @@ const ExploreSolutions = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
+  const [minAge, setMinAge] = useState(18);
+  const [bufferType, setBufferType] = useState<"default" | "custom">("default");
+  const [customBuffer, setCustomBuffer] = useState(7);
+  const [showConfigDialog, setShowConfigDialog] = useState(false);
+  const [currentSolution, setCurrentSolution] = useState<string | null>(null);
   
   // Solutions data
   const [solutions, setSolutions] = useState<Solution[]>([
@@ -48,6 +70,16 @@ const ExploreSolutions = () => {
 
   // Handle adding a solution
   const handleAddSolution = (solutionId: string) => {
+    if (solutionId === "age-verification") {
+      setCurrentSolution(solutionId);
+      setShowConfigDialog(true);
+    } else {
+      completeSolutionAddition(solutionId);
+    }
+  };
+
+  // Complete the solution addition after configuration (if needed)
+  const completeSolutionAddition = (solutionId: string) => {
     setSolutions(prev => 
       prev.map(solution => 
         solution.id === solutionId 
@@ -64,6 +96,24 @@ const ExploreSolutions = () => {
     // In a real implementation, you might redirect to the dashboard or configuration page
     if (solutionId === "identity-verification") {
       navigate("/dashboard");
+    } else if (solutionId === "age-verification") {
+      // Save the age configuration to localStorage
+      localStorage.setItem("ageVerificationConfig", JSON.stringify({
+        minAge,
+        bufferType,
+        customBuffer,
+      }));
+      
+      // Navigate to dashboard or relevant page
+      navigate("/dashboard");
+    }
+  };
+
+  // Handle saving age configuration
+  const handleSaveAgeConfig = () => {
+    setShowConfigDialog(false);
+    if (currentSolution) {
+      completeSolutionAddition(currentSolution);
     }
   };
 
@@ -74,6 +124,11 @@ const ExploreSolutions = () => {
       title: "Preview mode",
       description: `Preview for ${solutionId} solution would open here.`,
     });
+  };
+
+  // Calculate the actual buffer value
+  const getBufferValue = () => {
+    return bufferType === "default" ? 7 : customBuffer;
   };
 
   // Filter solutions based on search query
@@ -129,7 +184,12 @@ const ExploreSolutions = () => {
           {filteredSolutions.map(solution => (
             <Card key={solution.id} className="overflow-hidden border border-gray-200 rounded-lg transition-shadow hover:shadow-md">
               <div className="p-6">
-                <h2 className="text-xl font-bold text-verify-darkGray mb-4">{solution.name}</h2>
+                <div className="flex items-center gap-2 mb-4">
+                  {solution.id === "age-verification" && (
+                    <Cake className="h-5 w-5 text-verify-green" />
+                  )}
+                  <h2 className="text-xl font-bold text-verify-darkGray">{solution.name}</h2>
+                </div>
                 
                 {/* Components Flow */}
                 <div className="flex items-center mb-6 flex-wrap">
@@ -145,6 +205,106 @@ const ExploreSolutions = () => {
                 </div>
                 
                 <p className="text-verify-mediumGray mb-6">{solution.description}</p>
+                
+                {/* Age Verification Specific Configuration (if visible) */}
+                {solution.id === "age-verification" && !solution.isAdded && (
+                  <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-sm font-medium text-verify-darkGray">Age Threshold Configuration</h3>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                              <Info className="h-4 w-4 text-gray-500" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="max-w-xs text-xs">
+                              Buffer adds tolerance to prevent false negatives. Example: 18+ with 7-year buffer rejects users appearing under 25.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    
+                    <div className="space-y-4 mb-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="block text-sm text-verify-mediumGray mb-1">
+                            Verify users aged and above
+                          </label>
+                          <Input
+                            type="number"
+                            min={13}
+                            value={minAge}
+                            onChange={(e) => setMinAge(parseInt(e.target.value) || 18)}
+                            className="w-full"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm text-verify-mediumGray mb-1">
+                            Buffer setting
+                          </label>
+                          <Select
+                            value={bufferType}
+                            onValueChange={(value) => setBufferType(value as "default" | "custom")}
+                          >
+                            <SelectTrigger className="w-full">
+                              <SelectValue placeholder="Select buffer" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="default">Default buffer (+7 years)</SelectItem>
+                              <SelectItem value="custom">Custom buffer</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      
+                      {bufferType === "custom" && (
+                        <div>
+                          <label className="block text-sm text-verify-mediumGray mb-1">
+                            Custom buffer (years)
+                          </label>
+                          <Input
+                            type="number"
+                            min={0}
+                            max={20}
+                            value={customBuffer}
+                            onChange={(e) => setCustomBuffer(parseInt(e.target.value) || 0)}
+                            className="w-full"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    
+                    <a 
+                      href="https://docs.google.com/document/d/1IAh8bJZO4PzmZ62SyQuBl3p6aQ2xDqiMQQ2GOpBkB3k" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-verify-green hover:underline text-sm inline-flex items-center"
+                    >
+                      Learn how buffers work
+                      <ExternalLink className="ml-1 h-3 w-3" />
+                    </a>
+                  </div>
+                )}
+
+                {/* Age Verification Summary When Added */}
+                {solution.id === "age-verification" && solution.isAdded && (
+                  <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <h3 className="text-sm font-medium text-verify-darkGray mb-2">Current Configuration</h3>
+                    <div className="flex flex-wrap gap-4">
+                      <div>
+                        <p className="text-xs text-verify-mediumGray">Minimum Age</p>
+                        <p className="text-sm font-medium">{minAge}+</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-verify-mediumGray">Buffer</p>
+                        <p className="text-sm font-medium">+{getBufferValue()} years</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Button 
@@ -179,6 +339,107 @@ const ExploreSolutions = () => {
           ))}
         </div>
       </div>
+
+      {/* Age Verification Configuration Dialog */}
+      <Dialog open={showConfigDialog} onOpenChange={setShowConfigDialog}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Configure Age Verification</DialogTitle>
+            <DialogDescription>
+              Set the age threshold and buffer settings for your verification process.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <label className="text-sm font-medium block mb-1">
+                  Minimum Age
+                </label>
+                <Input
+                  type="number"
+                  min={13}
+                  value={minAge}
+                  onChange={(e) => setMinAge(parseInt(e.target.value) || 18)}
+                  className="w-full"
+                />
+                <p className="text-xs text-verify-mediumGray mt-1">
+                  Users below this age will be rejected.
+                </p>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium block mb-1">
+                  Buffer Setting
+                </label>
+                <Select 
+                  value={bufferType}
+                  onValueChange={(value) => setBufferType(value as "default" | "custom")}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select buffer" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">Default buffer (+7 years)</SelectItem>
+                    <SelectItem value="custom">Custom buffer</SelectItem>
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-verify-mediumGray mt-1">
+                  Buffer adds tolerance to prevent false negatives.
+                </p>
+              </div>
+              
+              {bufferType === "custom" && (
+                <div>
+                  <label className="text-sm font-medium block mb-1">
+                    Custom Buffer (years)
+                  </label>
+                  <Input
+                    type="number"
+                    min={0}
+                    max={20}
+                    value={customBuffer}
+                    onChange={(e) => setCustomBuffer(parseInt(e.target.value) || 0)}
+                    className="w-full"
+                  />
+                </div>
+              )}
+              
+              <div>
+                <a 
+                  href="https://docs.google.com/document/d/1IAh8bJZO4PzmZ62SyQuBl3p6aQ2xDqiMQQ2GOpBkB3k" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-verify-green hover:underline text-sm inline-flex items-center"
+                >
+                  Learn how buffers work
+                  <ExternalLink className="ml-1 h-3 w-3" />
+                </a>
+              </div>
+              
+              <div className="mt-2 p-3 bg-gray-50 rounded-md border border-gray-200">
+                <h4 className="text-sm font-medium mb-1">Integration Example</h4>
+                <pre className="text-xs bg-gray-100 p-2 rounded overflow-x-auto">
+{`{
+  "service": "age_verification",
+  "min_age": ${minAge},
+  "buffer": ${getBufferValue()}
+}`}
+                </pre>
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleSaveAgeConfig} className="bg-verify-green hover:bg-opacity-90">
+              Save Configuration & Add Solution
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
