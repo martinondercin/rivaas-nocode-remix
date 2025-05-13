@@ -16,7 +16,7 @@ const VerificationLimitReachedPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 p-4 md:p-8">
       <div className="mb-8 p-4">
-        <p className="text-xl font-bold" style={{ height: '25px' }}>
+        <p className="text-xl font-bold" style={{ height: '15px' }}>
           <span className="text-black">YOUR</span>
           <span className="text-verify-green">LOGO</span>
         </p>
