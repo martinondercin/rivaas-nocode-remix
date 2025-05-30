@@ -2,7 +2,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import GeneralSettings from "@/components/settings/GeneralSettings";
 import SecuritySettings from "@/components/settings/SecuritySettings";
-import ApiSettings from "@/components/settings/ApiSettings";
 
 const Settings = () => {
   return (
@@ -13,10 +12,9 @@ const Settings = () => {
       </header>
       
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-3 md:grid-cols-3">
+        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-2 md:grid-cols-2">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
-          <TabsTrigger value="api">API</TabsTrigger>
         </TabsList>
         
         <TabsContent value="general">
@@ -25,10 +23,6 @@ const Settings = () => {
         
         <TabsContent value="security">
           <SecuritySettings />
-        </TabsContent>
-        
-        <TabsContent value="api">
-          <ApiSettings />
         </TabsContent>
       </Tabs>
     </div>
