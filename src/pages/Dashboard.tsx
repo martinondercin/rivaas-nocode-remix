@@ -4,7 +4,7 @@ import { QrCode, Code } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { NoCodeIntegration } from "@/components/dashboard/NoCodeIntegration";
-import { UnifiedApiIntegration } from "@/components/dashboard/UnifiedApiIntegration";
+import { ApiContactForm } from "@/components/dashboard/ApiContactForm";
 
 const Dashboard = () => {
   const [noCodeVerificationCount] = useState(85);
@@ -56,7 +56,7 @@ const Dashboard = () => {
         </TabsContent>
         
         <TabsContent value="api" className="space-y-4 bg-[#F1F0FB] p-5 rounded-lg border border-gray-100 shadow-sm">
-          <UnifiedApiIntegration />
+          <ApiContactForm />
         </TabsContent>
       </Tabs>
     </div>
