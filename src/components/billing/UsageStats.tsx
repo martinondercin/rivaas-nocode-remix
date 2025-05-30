@@ -13,7 +13,7 @@ export function UsageStats() {
   ];
 
   const totalVerifications = data.reduce((sum, item) => sum + item.verifications, 0);
-  const estimatedCost = totalVerifications * 2.5; // Assume $2.50 per verification
+  const estimatedCost = totalVerifications * 1.1; // €1.10 per verification
   
   return (
     <div className="space-y-2">
@@ -23,7 +23,7 @@ export function UsageStats() {
       </div>
       
       <div className="text-sm text-verify-mediumGray">
-        Estimated cost: <span className="font-semibold">${estimatedCost.toFixed(2)}</span>
+        Estimated cost: <span className="font-semibold">€{estimatedCost.toFixed(2)}</span>
       </div>
       
       <div className="h-16 w-full mt-2">

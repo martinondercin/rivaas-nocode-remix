@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CreditCard, History } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { PaymentMethodCard } from "@/components/billing/PaymentMethodCard";
 import { UsageStats } from "@/components/billing/UsageStats";
 import { AddPaymentMethodDialog } from "@/components/billing/AddPaymentMethodDialog";
@@ -18,7 +18,7 @@ const Billing = () => {
   
   // Simulate verification cost tracking
   useEffect(() => {
-    const verificationCost = 2.5; // $2.50 per verification
+    const verificationCost = 1.1; // €1.10 per verification
     const newBalance = Math.max(0, 250 - (totalVerifications * verificationCost));
     setCurrentBalance(newBalance);
   }, [totalVerifications]);
@@ -56,9 +56,9 @@ const Billing = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-verify-darkGray">${currentBalance.toFixed(2)}</div>
+            <div className="text-3xl font-bold text-verify-darkGray">€{currentBalance.toFixed(2)}</div>
             <p className="text-verify-mediumGray text-sm">
-              Available balance for verification services ($2.50 per verification)
+              Available balance for verification services (€1.10 per verification)
             </p>
             <div className="mt-2 text-sm text-verify-mediumGray">
               Total verifications processed: <span className="font-semibold">{totalVerifications}</span>
@@ -135,7 +135,7 @@ const Billing = () => {
           setCurrentBalance(prev => prev + amount);
           toast({
             title: "Payment successful",
-            description: `$${amount.toFixed(2)} has been added to your balance.`,
+            description: `€${amount.toFixed(2)} has been added to your balance.`,
           });
         }}
       />
