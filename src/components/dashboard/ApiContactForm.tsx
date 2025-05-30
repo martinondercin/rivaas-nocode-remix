@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,9 +12,6 @@ export const ApiContactForm = () => {
   const { toast } = useToast();
   
   const [formData, setFormData] = useState({
-    fullName: "",
-    company: "",
-    email: "",
     message: ""
   });
   
@@ -38,10 +34,10 @@ export const ApiContactForm = () => {
       return;
     }
 
-    if (!formData.fullName || !formData.email || !formData.message) {
+    if (!formData.message) {
       toast({
-        title: "Required Fields Missing",
-        description: "Please fill in all required fields.",
+        title: "Message Required",
+        description: "Please enter your message.",
         variant: "destructive"
       });
       return;
@@ -60,9 +56,6 @@ export const ApiContactForm = () => {
       
       // Reset form
       setFormData({
-        fullName: "",
-        company: "",
-        email: "",
         message: ""
       });
       setPrivacyAccepted(false);
@@ -112,52 +105,6 @@ export const ApiContactForm = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-gray-900">
-                  Full Name *
-                </Label>
-                <Input
-                  id="fullName"
-                  type="text"
-                  placeholder="Your full name"
-                  value={formData.fullName}
-                  onChange={(e) => handleInputChange('fullName', e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-gray-500"
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="company" className="text-gray-900">
-                  Company
-                </Label>
-                <Input
-                  id="company"
-                  type="text"
-                  placeholder="Name your company"
-                  value={formData.company}
-                  onChange={(e) => handleInputChange('company', e.target.value)}
-                  className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-gray-500"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-900">
-                E-mail *
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="example@email.com"
-                value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className="bg-white border-gray-300 text-gray-900 placeholder:text-gray-500 focus:border-gray-500"
-                required
-              />
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="message" className="text-gray-900">
                 Your Message *
