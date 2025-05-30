@@ -92,7 +92,7 @@ export const ApiContactForm = () => {
         <Button
           variant="outline"
           onClick={handleOpenDocumentation}
-          className="border-[#0D1941] text-[#0D1941] hover:bg-[#0D1941]/10"
+          className="border-blue-400 text-blue-600 hover:bg-blue-50"
         >
           <FileText className="mr-2 h-4 w-4" />
           View Integration Manual
@@ -101,12 +101,12 @@ export const ApiContactForm = () => {
       </div>
 
       {/* Contact Form */}
-      <Card className="bg-[#0D1941] border-[#0D1941]">
+      <Card className="bg-blue-100 border-blue-200">
         <CardHeader className="text-center">
-          <CardTitle className="text-xl text-white">
+          <CardTitle className="text-xl text-blue-900">
             Need API Integration? Get in touch with us
           </CardTitle>
-          <p className="text-blue-100 mt-2">
+          <p className="text-blue-700 mt-2">
             Drop us a line, we will contact you within 24 hours
           </p>
         </CardHeader>
@@ -114,7 +114,7 @@ export const ApiContactForm = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName" className="text-white">
+                <Label htmlFor="fullName" className="text-blue-900">
                   Full Name *
                 </Label>
                 <Input
@@ -123,13 +123,13 @@ export const ApiContactForm = () => {
                   placeholder="Your full name"
                   value={formData.fullName}
                   onChange={(e) => handleInputChange('fullName', e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white/40"
+                  className="bg-white border-blue-300 text-blue-900 placeholder:text-blue-500 focus:border-blue-500"
                   required
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="company" className="text-white">
+                <Label htmlFor="company" className="text-blue-900">
                   Company
                 </Label>
                 <Input
@@ -138,13 +138,13 @@ export const ApiContactForm = () => {
                   placeholder="Name your company"
                   value={formData.company}
                   onChange={(e) => handleInputChange('company', e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white/40"
+                  className="bg-white border-blue-300 text-blue-900 placeholder:text-blue-500 focus:border-blue-500"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-white">
+              <Label htmlFor="email" className="text-blue-900">
                 E-mail *
               </Label>
               <Input
@@ -153,13 +153,13 @@ export const ApiContactForm = () => {
                 placeholder="example@email.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white/40"
+                className="bg-white border-blue-300 text-blue-900 placeholder:text-blue-500 focus:border-blue-500"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message" className="text-white">
+              <Label htmlFor="message" className="text-blue-900">
                 Your Message *
               </Label>
               <Textarea
@@ -167,7 +167,7 @@ export const ApiContactForm = () => {
                 placeholder="What's on your mind?"
                 value={formData.message}
                 onChange={(e) => handleInputChange('message', e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white/40 min-h-[120px]"
+                className="bg-white border-blue-300 text-blue-900 placeholder:text-blue-500 focus:border-blue-500 min-h-[120px]"
                 required
               />
             </div>
@@ -177,9 +177,9 @@ export const ApiContactForm = () => {
                 id="privacy"
                 checked={privacyAccepted}
                 onCheckedChange={(checked) => setPrivacyAccepted(checked as boolean)}
-                className="mt-1 border-white/20 data-[state=checked]:bg-white data-[state=checked]:text-[#0D1941]"
+                className="mt-1 border-blue-400 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white"
               />
-              <Label htmlFor="privacy" className="text-white/90 text-sm leading-relaxed">
+              <Label htmlFor="privacy" className="text-blue-800 text-sm leading-relaxed">
                 I agree to receive occasional emails with marketing communication under the Privacy Policy, 
                 and I confirm that I'm at least 16 years old. This consent is voluntary, and I can revoke it 
                 at any time. I can object to direct marketing, including profiling.
@@ -190,7 +190,7 @@ export const ApiContactForm = () => {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-white text-[#0D1941] hover:bg-white/90 font-medium"
+                className="w-full bg-blue-600 text-white hover:bg-blue-700 font-medium"
               >
                 {isSubmitting ? (
                   <>

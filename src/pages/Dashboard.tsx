@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { QrCode, Code } from "lucide-react";
+import { QrCode } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { NoCodeIntegration } from "@/components/dashboard/NoCodeIntegration";
@@ -8,7 +8,6 @@ import { ApiContactForm } from "@/components/dashboard/ApiContactForm";
 
 const Dashboard = () => {
   const [noCodeVerificationCount] = useState(85);
-  const [apiVerificationCount] = useState(389);
 
   return (
     <div className="p-6 h-full">
@@ -17,19 +16,12 @@ const Dashboard = () => {
         <p className="text-verify-mediumGray">Monitor your verification activity and manage integration options</p>
       </header>
       
-      <div className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="mb-8 grid grid-cols-1 gap-4">
         <StatsCard
           title="No-Code Verifications"
           value={noCodeVerificationCount}
           description="Identity verifications performed via links and QR codes"
           icon={QrCode}
-        />
-        
-        <StatsCard
-          title="API Integration Verifications"
-          value={apiVerificationCount}
-          description="Identity verifications performed via API integration"
-          icon={Code}
         />
       </div>
       
