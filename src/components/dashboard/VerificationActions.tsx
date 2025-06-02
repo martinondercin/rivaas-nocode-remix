@@ -8,13 +8,17 @@ interface VerificationActionsProps {
   linkStatus: "active" | "revoked";
   onGenerateLink: () => void;
   onRevokeLink: () => void;
+  currentVerifications: number;
 }
 
 export const VerificationActions = ({
   linkStatus,
   onGenerateLink,
   onRevokeLink,
+  currentVerifications,
 }: VerificationActionsProps) => {
+  const hasReachedLimit = currentVerifications >= 150;
+  
   return (
     <div className="flex items-center gap-4">
       <TooltipProvider>
@@ -40,14 +44,28 @@ export const VerificationActions = ({
       </TooltipProvider>
       
       {linkStatus === "active" && (
-        <Button 
-          variant="outline"
-          className="border-red-300 text-red-600 hover:bg-red-50 bg-red-50"
-          onClick={onRevokeLink}
-        >
-          <XCircle className="mr-1.5 h-4 w-4" />
-          Revoke Link
-        </Button>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <Button 
+                  variant="outline"
+                  className="border-red-300 text-red-600 hover:bg-red-50 bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={onRevokeLink}
+                  disabled={hasReachedLimit}
+                >
+                  <XCircle className="mr-1.5 h-4 w-4" />
+                  Revoke Link
+                </Button>
+              </div>
+            </TooltipTrigger>
+            {hasReachedLimit && (
+              <TooltipContent>
+                <p>Cannot revoke link when verification limit is reached</p>
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </TooltipProvider>
       )}
       
       <Popover>

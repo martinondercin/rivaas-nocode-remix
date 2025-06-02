@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -77,6 +76,7 @@ export const NoCodeIntegration = ({ currentVerifications }: NoCodeIntegrationPro
               linkStatus={linkStatus}
               onGenerateLink={handleGenerateLink}
               onRevokeLink={handleOpenRevokeDialog}
+              currentVerifications={currentVerifications}
             />
             
             <VerificationLinkDisplay 
