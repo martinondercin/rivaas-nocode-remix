@@ -15,6 +15,7 @@ export const VerificationProgress = ({
   linkStatus,
 }: VerificationProgressProps) => {
   const percentComplete = (currentVerifications / maxVerifications) * 100;
+  const hasReachedLimit = currentVerifications >= 150;
   
   return (
     <div className="space-y-2">
@@ -37,20 +38,41 @@ export const VerificationProgress = ({
       </div>
       <Progress value={percentComplete} className="h-2" />
       
-      <Alert className="mt-3 bg-verify-lightGray border-verify-mediumGray/20">
-        <AlertDescription className="text-xs text-verify-mediumGray">
-          Once the maximum number of free verifications is achieved, link and QR code will be deactivated. 
-          In order to continue with this service, please{" "}
-          <a 
-            href="https://www.innovatrics.com/contact/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-verify-green hover:underline font-medium"
-          >
-            contact us
-          </a>.
-        </AlertDescription>
-      </Alert>
+      {hasReachedLimit && (
+        <div className="mt-4 space-y-3">
+          <div className="text-lg font-semibold text-verify-green">
+            You've successfully completed 150 identity verifications with our service.
+          </div>
+          <div className="text-sm text-verify-mediumGray">
+            Your free trial has reached its limit, but we'd love to help you continue growing. Let's discuss a custom plan that fits your verification volume and business needs.{" "}
+            <a 
+              href="https://www.innovatrics.com/contact/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-verify-green hover:underline font-medium"
+            >
+              Contact Us
+            </a>
+          </div>
+        </div>
+      )}
+      
+      {!hasReachedLimit && (
+        <Alert className="mt-3 bg-verify-lightGray border-verify-mediumGray/20">
+          <AlertDescription className="text-xs text-verify-mediumGray">
+            Once the maximum number of free verifications is achieved, link and QR code will be deactivated. 
+            In order to continue with this service, please{" "}
+            <a 
+              href="https://www.innovatrics.com/contact/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-verify-green hover:underline font-medium"
+            >
+              contact us
+            </a>.
+          </AlertDescription>
+        </Alert>
+      )}
     </div>
   );
 };
