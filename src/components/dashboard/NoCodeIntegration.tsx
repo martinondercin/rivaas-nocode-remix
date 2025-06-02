@@ -18,7 +18,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-export const NoCodeIntegration = () => {
+interface NoCodeIntegrationProps {
+  currentVerifications: number;
+}
+
+export const NoCodeIntegration = ({ currentVerifications }: NoCodeIntegrationProps) => {
   const [showQrCode, setShowQrCode] = useState(false);
   const verificationLink = "https://verify-identity.innovatrics.com/demo-iframe";
   const [showRevokeDialog, setShowRevokeDialog] = useState(false);
@@ -27,7 +31,6 @@ export const NoCodeIntegration = () => {
   
   // Set maximum number of verifications to 150
   const maxVerifications = 150;
-  const currentVerifications = 85; // Current number of verifications
   
   const handleGenerateLink = () => {
     setLinkStatus("active");

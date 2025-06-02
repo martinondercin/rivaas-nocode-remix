@@ -22,7 +22,12 @@ export const VerificationProgress = ({
       <div className="flex justify-between text-sm items-center">
         <div className="flex items-center gap-2">
           <span>{currentVerifications} verifications performed</span>
-          {linkStatus === "active" ? (
+          {hasReachedLimit ? (
+            <span className="inline-flex items-center bg-red-50 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium gap-1">
+              <XCircle className="h-3 w-3" />
+              Limit Achieved
+            </span>
+          ) : linkStatus === "active" ? (
             <span className="inline-flex items-center bg-green-50 text-green-700 px-2 py-0.5 rounded-full text-xs font-medium gap-1">
               <CheckCircle className="h-3 w-3" />
               Active

@@ -44,7 +44,7 @@ const Dashboard = () => {
         </TabsList>
         
         <TabsContent value="no-code" className="space-y-4 bg-[#F1F0FB] p-5 rounded-lg border border-gray-100 shadow-sm">
-          <NoCodeIntegration />
+          <NoCodeIntegration currentVerifications={noCodeVerificationCount} />
         </TabsContent>
         
         <TabsContent value="api" className="space-y-4 bg-[#F1F0FB] p-5 rounded-lg border border-gray-100 shadow-sm">
