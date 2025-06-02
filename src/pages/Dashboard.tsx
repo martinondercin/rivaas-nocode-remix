@@ -7,7 +7,7 @@ import { NoCodeIntegration } from "@/components/dashboard/NoCodeIntegration";
 import { ApiContactForm } from "@/components/dashboard/ApiContactForm";
 
 const Dashboard = () => {
-  const [noCodeVerificationCount] = useState(85);
+  const [noCodeVerificationCount] = useState(150); // Changed from 85 to 150 to show the limit reached message
 
   return (
     <div className="p-6 h-full">
