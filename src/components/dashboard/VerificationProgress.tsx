@@ -40,7 +40,15 @@ export const VerificationProgress = ({
       <Alert className="mt-3 bg-verify-lightGray border-verify-mediumGray/20">
         <AlertDescription className="text-xs text-verify-mediumGray">
           Once the maximum number of free verifications is achieved, link and QR code will be deactivated. 
-          In order to continue with this service, please contact us.
+          In order to continue with this service, please{" "}
+          <a 
+            href="https://www.innovatrics.com/contact/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-verify-green hover:underline font-medium"
+          >
+            contact us
+          </a>.
         </AlertDescription>
       </Alert>
     </div>
