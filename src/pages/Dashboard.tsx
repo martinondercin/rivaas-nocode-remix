@@ -18,7 +18,7 @@ const Dashboard = () => {
       
       <div className="mb-8 grid grid-cols-1 gap-4">
         <StatsCard
-          title="No-Code Verifications"
+          title="No-code Evaluation Verifications"
           value={noCodeVerificationCount}
           description="Identity verifications performed via links and QR codes"
           icon={QrCode}
@@ -33,7 +33,7 @@ const Dashboard = () => {
             value="no-code" 
             className="data-[state=active]:bg-verify-green data-[state=active]:text-white data-[state=active]:shadow-md transition-all duration-300 font-medium"
           >
-            No-Code Integration
+            No-code free trial
           </TabsTrigger>
           <TabsTrigger 
             value="api"
