@@ -62,7 +62,7 @@ const GeneralSettings = () => {
               className="mt-1"
             />
             <p className="text-xs text-verify-mediumGray mt-1">
-              Number of days verification data is kept before being permanently deleted
+              Number of days verification data is kept before being sent to customer email and permanently deleted
             </p>
           </div>
         </div>
