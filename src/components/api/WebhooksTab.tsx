@@ -22,16 +22,7 @@ interface Webhook {
 
 const WebhooksTab = () => {
   const { toast } = useToast();
-  const [webhooks, setWebhooks] = useState<Webhook[]>([
-    {
-      id: "1",
-      name: "User Verification",
-      endpoint: "https://api.example.com/webhook/verification",
-      createdAt: "2024-01-15",
-      type: "Verification",
-      action: "Active"
-    }
-  ]);
+  const [webhooks, setWebhooks] = useState<Webhook[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [webhookName, setWebhookName] = useState("");
   const [endpoint, setEndpoint] = useState("");
@@ -85,13 +76,14 @@ const WebhooksTab = () => {
             Manage webhooks to receive real-time updates for AML, Adverse Media or changes in case status.
           </CardDescription>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-verify-purple hover:bg-verify-purple/90 text-white">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Webhook
-            </Button>
-          </DialogTrigger>
+        {webhooks.length > 0 ? (
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-verify-purple hover:bg-verify-purple/90 text-white">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Webhook
+              </Button>
+            </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create a new Webhook</DialogTitle>
@@ -149,9 +141,84 @@ const WebhooksTab = () => {
             </div>
           </DialogContent>
         </Dialog>
+        ) : null}
       </CardHeader>
       <CardContent>
-        <Table>
+        {webhooks.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="text-center mb-6">
+              <h3 className="text-lg font-semibold mb-2">No webhooks configured</h3>
+              <p className="text-verify-mediumGray mb-6">
+                Create your first webhook to receive real-time updates for AML, Adverse Media or changes in case status.
+              </p>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-verify-purple hover:bg-verify-purple/90 text-white">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Your First Webhook
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Create a new Webhook</DialogTitle>
+                    <DialogDescription>
+                      Receive real-time updates for AML, Adverse Media or changes in case status.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 pt-4">
+                    <div>
+                      <Label htmlFor="webhook-name">Webhook Name</Label>
+                      <Input
+                        id="webhook-name"
+                        placeholder="Enter webhook name"
+                        value={webhookName}
+                        onChange={(e) => setWebhookName(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="endpoint">Endpoint</Label>
+                      <Input
+                        id="endpoint"
+                        placeholder="http://your-url"
+                        value={endpoint}
+                        onChange={(e) => setEndpoint(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="trigger-conditions">Trigger Conditions</Label>
+                      <Select onValueChange={setTriggerCondition}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Trigger Conditions" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="verification">Verification Complete</SelectItem>
+                          <SelectItem value="aml">AML Check</SelectItem>
+                          <SelectItem value="adverse-media">Adverse Media</SelectItem>
+                          <SelectItem value="case-status">Case Status Change</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex justify-end gap-2 pt-4">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsDialogOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={handleCreateWebhook}
+                        className="bg-verify-purple hover:bg-verify-purple/90 text-white"
+                      >
+                        Create
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        ) : (
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Webhook Name</TableHead>
@@ -200,6 +267,7 @@ const WebhooksTab = () => {
             ))}
           </TableBody>
         </Table>
+        )}
       </CardContent>
     </Card>
   );

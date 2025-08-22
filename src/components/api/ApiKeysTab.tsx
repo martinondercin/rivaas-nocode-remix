@@ -21,16 +21,7 @@ interface ApiKey {
 
 const ApiKeysTab = () => {
   const { toast } = useToast();
-  const [apiKeys, setApiKeys] = useState<ApiKey[]>([
-    {
-      id: "1",
-      name: "Production API",
-      key: "sk_live_abcd1234567890",
-      expiresAt: "2024-12-31",
-      createdAt: "2024-01-15",
-      status: "Active"
-    }
-  ]);
+  const [apiKeys, setApiKeys] = useState<ApiKey[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [validityPeriod, setValidityPeriod] = useState("");
   const [password, setPassword] = useState("");
@@ -106,13 +97,14 @@ const ApiKeysTab = () => {
             Manage your API keys for accessing the verification services.
           </CardDescription>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-verify-purple hover:bg-verify-purple/90 text-white">
-              <Plus className="h-4 w-4 mr-2" />
-              Generate Api Key
-            </Button>
-          </DialogTrigger>
+        {apiKeys.length > 0 ? (
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-verify-purple hover:bg-verify-purple/90 text-white">
+                <Plus className="h-4 w-4 mr-2" />
+                Generate Api Key
+              </Button>
+            </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Verify and Generate New Api Key</DialogTitle>
@@ -169,9 +161,83 @@ const ApiKeysTab = () => {
             </div>
           </DialogContent>
         </Dialog>
+        ) : null}
       </CardHeader>
       <CardContent>
-        <Table>
+        {apiKeys.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <div className="text-center mb-6">
+              <h3 className="text-lg font-semibold mb-2">No API keys generated</h3>
+              <p className="text-verify-mediumGray mb-6">
+                Generate your first API key to start accessing the verification services.
+              </p>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button className="bg-verify-purple hover:bg-verify-purple/90 text-white">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Generate Your First API Key
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Verify and Generate New Api Key</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 pt-4">
+                    <div>
+                      <Label htmlFor="validity-period">Enter the API key's validity period in days.</Label>
+                      <Input
+                        id="validity-period"
+                        placeholder="Enter the API key's validity period in days."
+                        value={validityPeriod}
+                        onChange={(e) => setValidityPeriod(e.target.value)}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="password">Password</Label>
+                      <div className="relative">
+                        <Input
+                          id="password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="flex justify-end gap-2 pt-4">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsDialogOpen(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={handleGenerateApiKey}
+                        className="bg-verify-purple hover:bg-verify-purple/90 text-white"
+                      >
+                        Generate Api Key
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+          </div>
+        ) : (
+          <Table>
           <TableHeader>
             <TableRow>
               <TableHead>API Key</TableHead>
@@ -236,6 +302,7 @@ const ApiKeysTab = () => {
             ))}
           </TableBody>
         </Table>
+        )}
       </CardContent>
     </Card>
   );
