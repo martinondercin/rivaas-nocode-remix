@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import GeneralSettings from "@/components/settings/GeneralSettings";
 import SecuritySettings from "@/components/settings/SecuritySettings";
+import UserManagement from "@/components/settings/UserManagement";
 import AddUserDialog from "@/components/settings/AddUserDialog";
 
 const Settings = () => {
@@ -18,9 +19,10 @@ const Settings = () => {
       </header>
       
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-2 md:grid-cols-2">
+        <TabsList className="grid w-full md:w-auto md:inline-grid grid-cols-3 md:grid-cols-3">
           <TabsTrigger value="general">General</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
+          <TabsTrigger value="users">Users</TabsTrigger>
         </TabsList>
         
         <TabsContent value="general">
@@ -29,6 +31,10 @@ const Settings = () => {
         
         <TabsContent value="security">
           <SecuritySettings />
+        </TabsContent>
+        
+        <TabsContent value="users">
+          <UserManagement />
         </TabsContent>
       </Tabs>
     </div>
