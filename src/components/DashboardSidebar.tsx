@@ -1,6 +1,6 @@
 
 import { Link, useLocation } from "react-router-dom";
-import { BarChart3, Clock, FileText, Settings, LogOut, User, CreditCard } from "lucide-react";
+import { BarChart3, Clock, FileText, Settings, LogOut, User, CreditCard, Code } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -42,6 +42,11 @@ export const DashboardSidebar = () => {
       name: "Settings",
       path: "/dashboard/settings",
       icon: <Settings className="h-5 w-5" />,
+    },
+    {
+      name: "API",
+      path: "/dashboard/api",
+      icon: <Code className="h-5 w-5" />,
     },
   ];
 

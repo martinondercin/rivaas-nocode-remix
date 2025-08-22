@@ -14,6 +14,7 @@ import Activities from "./pages/Activities";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import Billing from "./pages/Billing";
+import Api from "./pages/Api";
 import NotFound from "./pages/NotFound";
 import VerificationLimitReachedPage from "./pages/VerificationLimitReachedPage";
 import ExploreSolutions from "./pages/ExploreSolutions";
@@ -41,6 +42,7 @@ const App = () => (
             <Route path="/dashboard/reports" element={<Reports />} />
             <Route path="/dashboard/settings" element={<Settings />} />
             <Route path="/dashboard/billing" element={<Billing />} />
+            <Route path="/dashboard/api" element={<Api />} />
           </Route>
           
           <Route path="*" element={<NotFound />} />
